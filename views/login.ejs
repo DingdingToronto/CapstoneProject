@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="target-paragraph">24 Points Game</h1>
+      <form action="/users/login" method="POST" class="auth-form">
+        <input type="text" name="username" placeholder="Username" required />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit" class="auth-button">Log In</button>
+      </form>
+      <div class="auth-links">
+        <a href="/users/signup">Don't have an account? Sign Up</a>
+      </div>
+      <% if (error) { %>
+      <p class="error-message"><%= error %></p>
+      <% } %>
+    </div>
+  </body>
+</html>

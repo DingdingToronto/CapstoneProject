@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <% if (!user) { %>
+    <div class="container">
+      <h1 id="target-paragraph" class="title">24 Points Game</h1>
+      <div class="auth-buttons">
+        <a href="/users/signup" class="auth-button">Sign Up</a>
+        <a href="/users/login" class="auth-button">Log In</a>
+      </div>
+    </div>
+    <% } else { %>
+    <div class="auth-links">
+      <span class="player-name">Player: <%= user.username %></span> |
+      <a href="/users/logout">Log Out</a>
+    </div>
+    <div id="target-paragraph">
+      24 Points Game
+      <button class="rule">Rule</button>
+    </div>
+    <div class="explaination">
+      <div>
+        <strong style="color: red">RULE OF THE GAME:</strong> In the game of 24
+        points, you're given four numbers, like 4, 6, 8, and 2, and you have to
+        use addition, subtraction, multiplication, and division to make the
+        number 24. You can only use each number once, and you have to end up
+        with a whole number. For example, with 4, 6, 8, and 2, you could say 6
+        divided by (8 divided by 2) times 4. It's like a puzzle where you get to
+        play with numbers and try to make them add up to 24 in different ways.
+        It's a fun way to practice math!
+      </div>
+      <button class="buttonBegin, close-rule" onclick="ready()">
+        ready to begin!
+      </button>
+    </div>
+    <div class="game">
+      <div class="time-bar-container">
+        <div class="time-bar" id="time-bar"></div>
+      </div>
+      <div class="numberBox">
+        <div class="numbers"></div>
+        <div class="numbers"></div>
+        <div class="numbers"></div>
+        <div class="numbers"></div>
+      </div>
+      <div class="operatorBox">
+        <div class="operator">+</div>
+        <div class="operator">-</div>
+        <div class="operator">*</div>
+        <div class="operator">/</div>
+        <div class="operatorLeft">(</div>
+        <div class="operatorRight">)</div>
+        <button class="refresh">Refresh</button>
+      </div>
+      <div id="resulting"></div>
+      <div class="buttons">
+        <button class="back">back</button>
+        <button class="go">Go</button>
+        <button class="clue sendToAPI">clue</button>
+      </div>
+      <div id="clue"></div>
+    </div>
+    <div class="end">
+      <div>Congratulations!! You solved it!!</div>
+      <button class="try">Try again?</button>
+    </div>
+    <script src="/script.js"></script>
+    <% } %>
+  </body>
+</html>
