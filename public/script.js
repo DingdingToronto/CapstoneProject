@@ -1,6 +1,10 @@
 var backNumber = [];
 var countNumber = [];
 var allNumbers = [];
+var clueUsed = false;
+var interval;
+var timeRemaining;
+var timeLimit = 60;
 
 if (!localStorage.getItem("stateOfBegin")) {
   localStorage.setItem("stateOfBegin", "false");
@@ -13,33 +17,53 @@ function ready() {
 }
 
 $(window).on("load", function () {
-  var timeLimit = 60;
   var timeBar = $("#time-bar");
-  var interval;
-  var timeRemaining = timeLimit;
+  var timeRemainingText = $("#time-remaining");
+  timeRemaining = timeLimit;
 
   function startTimer() {
-    interval = setInterval(function () {
-      timeRemaining--;
-      var percentage = (timeRemaining / timeLimit) * 100;
-      timeBar.css("width", percentage + "%");
+    interval = setInterval(updateTimer, 1000);
+  }
 
-      if (timeRemaining <= 0) {
-        clearInterval(interval);
-        endGame();
-      }
-    }, 1000);
+  function updateTimer() {
+    timeRemaining--;
+    var percentage = (timeRemaining / timeLimit) * 100;
+    timeBar.css("width", percentage + "%");
+    timeRemainingText.text(timeRemaining + "s");
+
+    if (percentage > 50) {
+      timeBar.css("background-color", "#4caf50");
+    } else if (percentage > 25) {
+      timeBar.css("background-color", "#ffeb3b");
+    } else {
+      timeBar.css("background-color", "#f44336");
+    }
+
+    if (timeRemaining <= 0) {
+      clearInterval(interval);
+      endGame();
+    }
+  }
+
+  function pauseTimer() {
+    clearInterval(interval);
+  }
+
+  function resumeTimer() {
+    interval = setInterval(updateTimer, 1000);
   }
 
   function endGame() {
     $(".game").css("display", "none");
     $(".end").css("display", "flex");
+    checkAndUpdateScore();
   }
 
   function newQuestion() {
     backNumber = [];
     countNumber = [];
     allNumbers = [];
+    clueUsed = false;
     $("#resulting").text("");
     $(".numbers").each(function () {
       setNumberStyles($(this));
@@ -49,17 +73,22 @@ $(window).on("load", function () {
     });
   }
 
+  function resetGame() {
+    resetScore();
+    newQuestion();
+    $(".game").css("display", "block");
+    $(".explaination").css("display", "none");
+    timeRemaining = timeLimit;
+    startTimer();
+  }
+
   if (stateOfBegin === "false") {
     $(".buttonBegin").on("click", function () {
-      $(".explaination").css("display", "none");
-      $(".game").css("display", "block");
+      resetGame();
       ready();
-      startTimer();
     });
   } else {
-    $(".explaination").css("display", "none");
-    $(".game").css("display", "block");
-    startTimer();
+    resetGame();
   }
 
   function getRandomNumber() {
@@ -194,6 +223,38 @@ $(window).on("load", function () {
     });
   });
 
+  function updateScore(newScore) {
+    $.ajax({
+      url: "/users/updateScore",
+      method: "POST",
+      data: { score: newScore },
+      success: function () {
+        $(".player-score").text("Score: " + newScore);
+      },
+      error: function (err) {
+        console.error("Failed to update score:", err);
+      },
+    });
+  }
+
+  function resetScore() {
+    $.ajax({
+      url: "/users/resetScore",
+      method: "POST",
+      success: function () {
+        $(".player-score").text("Score: 0");
+      },
+      error: function (err) {
+        console.error("Failed to reset score:", err);
+      },
+    });
+  }
+
+  function checkAndUpdateScore() {
+    const currentScore = parseInt($(".player-score").text().split(" ")[1]);
+    updateScore(currentScore);
+  }
+
   $(".go").on("click", function () {
     const originalText = $("#resulting").text();
 
@@ -211,6 +272,13 @@ $(window).on("load", function () {
         $("#resulting").text("Correct! Loading next question...");
         $("#resulting").css("fontSize", "20px");
         $("#resulting").css("color", "green");
+
+        if (!clueUsed) {
+          const newScore =
+            parseInt($(".player-score").text().split(" ")[1]) + 1;
+          $(".player-score").text("Score: " + newScore);
+        }
+
         setTimeout(() => {
           newQuestion();
           $("#resulting").css("fontSize", "40px");
@@ -233,22 +301,24 @@ $(window).on("load", function () {
   });
 
   $(".refresh").on("click", function () {
-    location.reload();
+    newQuestion();
   });
 
   $(".try").on("click", function () {
     location.reload();
-    localStorage.removeItem("stateOfBegin");
+    // localStorage.removeItem("stateOfBegin");
   });
 
   $(".rule").on("click", function () {
     $(".explaination").css("display", "block");
     $(".game").css("display", "none");
+    pauseTimer();
   });
 
   $(".close-rule").on("click", function () {
     $(".explaination").css("display", "none");
     $(".game").css("display", "block");
+    resumeTimer();
   });
 });
 
@@ -271,6 +341,7 @@ $(".sendToAPI").on("click", function () {
     })
     .then((data) => {
       if (data.result.length > 1) {
+        clueUsed = true;
         $("#clue").fadeIn(4000);
         $("#clue").text("The Answer is: " + data.result[0]);
         $("#clue").fadeOut(4000);

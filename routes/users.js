@@ -52,4 +52,32 @@ router.get("/logout", (req, res) => {
   res.redirect("/users/login");
 });
 
+router.post("/updateScore", async (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  const { score } = req.body;
+  try {
+    const user = await User.findById(req.session.user._id);
+    if (score > user.score) {
+      user.score = score;
+      await user.save();
+      req.session.user.score = score; // Update the session with the new score
+    }
+    res.status(200).send("Score updated successfully");
+  } catch (error) {
+    res.status(500).send("Error updating score");
+  }
+});
+
+router.post("/resetScore", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  req.session.user.score = 0; // Reset score in session
+  res.status(200).send("Score reset successfully");
+});
+
 module.exports = router;

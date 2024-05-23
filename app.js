@@ -9,10 +9,8 @@ const connectDB = require("./db");
 
 const app = express();
 
-// Connect to MongoDB
 connectDB();
 
-// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
@@ -26,10 +24,8 @@ app.use(
   })
 );
 
-// Setting EJS as templating engine
 app.set("view engine", "ejs");
 
-// Routes
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
 
