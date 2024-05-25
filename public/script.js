@@ -18,7 +18,8 @@ function ready() {
 
 $(window).on("load", function () {
   var timeBar = $("#time-bar");
-  var timeRemainingText = $("#time-remaining");
+  var timeBarContainer = $(".time-bar-container");
+  var timeRemainingText = $(".time-remaining");
   timeRemaining = timeLimit;
 
   function startTimer() {
@@ -33,10 +34,13 @@ $(window).on("load", function () {
 
     if (percentage > 50) {
       timeBar.css("background-color", "#4caf50");
+      timeBarContainer.css("border-color", "#4caf50");
     } else if (percentage > 25) {
       timeBar.css("background-color", "#ffeb3b");
+      timeBarContainer.css("border-color", "#ffeb3b");
     } else {
       timeBar.css("background-color", "#f44336");
+      timeBarContainer.css("border-color", "#f44336");
     }
 
     if (timeRemaining <= 0) {
@@ -56,7 +60,25 @@ $(window).on("load", function () {
   function endGame() {
     $(".game").css("display", "none");
     $(".end").css("display", "flex");
+    $(".rule").css("display", "none");
     checkAndUpdateScore();
+
+    $(".end").html(`
+      <div class="yourScore">Your Score: ${
+        $(".player-score").text().split(" ")[1]
+      }</div>
+      <button class="try" id="tryAgainButton">Try Again</button>
+      <button class="try" id="checkRankButton">Check Rank</button>
+    `);
+
+    $("#tryAgainButton").on("click", function () {
+      console.log("Try Again button clicked");
+      resetGame();
+    });
+
+    $("#checkRankButton").on("click", function () {
+      window.location.href = "/users/rank";
+    });
   }
 
   function newQuestion() {
@@ -75,9 +97,9 @@ $(window).on("load", function () {
 
   function resetGame() {
     resetScore();
-    newQuestion();
+    $(".end").css("display", "none");
     $(".game").css("display", "block");
-    $(".explaination").css("display", "none");
+    newQuestion();
     timeRemaining = timeLimit;
     startTimer();
   }
@@ -306,7 +328,6 @@ $(window).on("load", function () {
 
   $(".try").on("click", function () {
     location.reload();
-    // localStorage.removeItem("stateOfBegin");
   });
 
   $(".rule").on("click", function () {

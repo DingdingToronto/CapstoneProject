@@ -15,6 +15,7 @@ body {
   color: #fff;
   text-decoration: none;
   margin: 0 10px;
+  margin-top: 20px;
   font-family: "Roboto", sans-serif;
 }
 
@@ -263,6 +264,7 @@ body {
 
 .end {
   display: none;
+  margin-top: 10%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -284,7 +286,7 @@ body {
 }
 
 .explaination {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -361,9 +363,8 @@ body {
 
 .time-bar {
   height: 100%;
-  background: linear-gradient(to right, #76c7c0, #4caf50);
   width: 100%;
-  transition: width 1s linear;
+  transition: width 1s linear, background-color 1s linear;
   border-radius: 15px;
 }
 
@@ -379,4 +380,307 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: bold;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.rank-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1em;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid #4caf50;
+  color: #4caf50;
+  background-color: #1a1a1a;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.rank-button:hover {
+  background-color: #4caf50;
+  color: #ffffff;
+}
+
+.rank-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 20px;
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+}
+
+.rank-container h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.rank-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 20px;
+  background-color: #444;
+  border: 1px solid #555;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.rank-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  flex: 1;
+  text-align: center;
+}
+
+#rank-list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.rank-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  border: 1px solid #555;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.rank-item:hover {
+  background-color: #555;
+  transform: scale(1.02);
+}
+
+.rank-position {
+  font-size: 1.5em;
+  font-weight: bold;
+  flex: 1;
+  text-align: center;
+}
+
+.rank-username {
+  font-size: 1.2em;
+  flex: 2;
+  text-align: center;
+}
+
+.rank-score {
+  font-size: 1.2em;
+  color: #4caf50;
+  font-weight: bold;
+  flex: 1;
+  text-align: center;
+}
+
+.back {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1em;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid #000000;
+  color: #000000;
+  background-color: #ffffff;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.back:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.yourScore {
+  margin-top: 30px;
+}
+#tryAgainButton {
+  margin-bottom: 20px;
+}
+
+/*--------------------------------------------------------------------------------responsive design*/
+@media (max-width: 1200px) {
+  .auth-links {
+    font-size: 16px;
+    top: 8px;
+    right: 15px;
+  }
+
+  .auth-button {
+    width: 130px;
+    padding: 8px 16px;
+  }
+
+  .numbers {
+    width: 180px;
+    height: 180px;
+    font-size: 40px;
+  }
+
+  .operator,
+  .operatorLeft,
+  .operatorRight {
+    width: 45px;
+    height: 45px;
+    font-size: 45px;
+  }
+
+  #resulting {
+    width: 70%;
+    font-size: 35px;
+  }
+
+  #clue {
+    font-size: 35px;
+  }
+
+  .rank-container h1 {
+    font-size: 2.5em;
+  }
+}
+
+@media (max-width: 992px) {
+  .auth-links {
+    font-size: 14px;
+    top: 6px;
+    right: 10px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .auth-button {
+    width: 120px;
+    padding: 6px 14px;
+  }
+
+  .numbers {
+    width: 150px;
+    height: 150px;
+    font-size: 35px;
+  }
+
+  .operator,
+  .operatorLeft,
+  .operatorRight {
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+  }
+
+  #resulting {
+    width: 60%;
+    font-size: 30px;
+  }
+
+  #clue {
+    font-size: 30px;
+  }
+
+  .rank-container h1 {
+    font-size: 2em;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-links {
+    font-size: 12px;
+    top: 4px;
+    right: 8px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .auth-button {
+    width: 100px;
+    padding: 5px 12px;
+  }
+
+  .numbers {
+    width: 120px;
+    height: 120px;
+    font-size: 30px;
+  }
+
+  .operator,
+  .operatorLeft,
+  .operatorRight {
+    width: 35px;
+    height: 35px;
+    font-size: 35px;
+  }
+
+  #resulting {
+    width: 50%;
+    font-size: 25px;
+  }
+
+  #clue {
+    font-size: 25px;
+  }
+
+  .rank-container h1 {
+    font-size: 1.8em;
+  }
+}
+
+@media (max-width: 576px) {
+  .auth-links {
+    font-size: 10px;
+    top: 2px;
+    right: 5px;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .auth-button {
+    width: 90px;
+    padding: 4px 10px;
+  }
+
+  .numbers {
+    width: 100px;
+    height: 100px;
+    font-size: 25px;
+  }
+
+  .operator,
+  .operatorLeft,
+  .operatorRight {
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+  }
+
+  #resulting {
+    width: 40%;
+    font-size: 20px;
+  }
+
+  #clue {
+    font-size: 20px;
+  }
+
+  .rank-container h1 {
+    font-size: 1.5em;
+  }
 }

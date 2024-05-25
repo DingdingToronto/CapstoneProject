@@ -63,7 +63,7 @@ router.post("/updateScore", async (req, res) => {
     if (score > user.score) {
       user.score = score;
       await user.save();
-      req.session.user.score = score; // Update the session with the new score
+      req.session.user.score = score;
     }
     res.status(200).send("Score updated successfully");
   } catch (error) {
@@ -76,8 +76,18 @@ router.post("/resetScore", (req, res) => {
     return res.status(401).send("Unauthorized");
   }
 
-  req.session.user.score = 0; // Reset score in session
+  req.session.user.score = 0;
   res.status(200).send("Score reset successfully");
+});
+
+// Rank route
+router.get("/rank", async (req, res) => {
+  try {
+    const users = await User.find().sort({ score: -1 });
+    res.render("rank", { users });
+  } catch (err) {
+    res.status(500).send("Error retrieving user ranks");
+  }
 });
 
 module.exports = router;

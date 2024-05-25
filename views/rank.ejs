@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Player Ranks</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="rank-container">
+      <h1>Player Ranks</h1>
+      <div class="rank-header">
+        <span class="rank-title">Rank</span>
+        <span class="rank-title">Player Name</span>
+        <span class="rank-title">Highest Score</span>
+      </div>
+      <ul id="rank-list">
+        <% users.forEach(function(user, index) { %>
+        <li class="rank-item">
+          <span class="rank-position"><%= index + 1 %></span>
+          <span class="rank-username"><%= user.username %></span>
+          <span class="rank-score"><%= user.score %></span>
+        </li>
+        <% }) %>
+      </ul>
+      <button class="back" onclick="window.history.back()">Back</button>
+    </div>
+  </body>
+</html>
