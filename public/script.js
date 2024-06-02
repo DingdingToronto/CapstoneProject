@@ -98,6 +98,7 @@ $(window).on("load", function () {
   function resetGame() {
     resetScore();
     $(".end").css("display", "none");
+    $(".rule").css("display", "unset");
     $(".game").css("display", "block");
     newQuestion();
     timeRemaining = timeLimit;
