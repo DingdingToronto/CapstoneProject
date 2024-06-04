@@ -18,7 +18,7 @@ function ready() {
 }
 
 function getRandomNumber() {
-  if (stateOfNumber == true) {
+  if (stateOfNumber) {
     return Math.ceil(Math.random() * 13);
   } else {
     return "?";
@@ -53,6 +53,67 @@ function setNumberStyles(element) {
   allNumbers.push(numberToShow);
 }
 
+function startTimer() {
+  if (stateOfNumber) {
+    interval = setInterval(updateTimer, 1000);
+  }
+}
+
+function updateTimer() {
+  timeRemaining--;
+  var percentage = (timeRemaining / timeLimit) * 100;
+  $("#time-bar").css("width", percentage + "%");
+  $(".time-remaining").text(timeRemaining + "s");
+
+  if (percentage > 50) {
+    $("#time-bar").css("background-color", "#4caf50");
+    $(".time-bar-container").css("border-color", "#4caf50");
+  } else if (percentage > 25) {
+    $("#time-bar").css("background-color", "#ffeb3b");
+    $(".time-bar-container").css("border-color", "#ffeb3b");
+  } else {
+    $("#time-bar").css("background-color", "#f44336");
+    $(".time-bar-container").css("border-color", "#f44336");
+  }
+
+  if (timeRemaining <= 0) {
+    clearInterval(interval);
+    endGame();
+  }
+}
+
+function pauseTimer() {
+  clearInterval(interval);
+}
+
+function resumeTimer() {
+  interval = setInterval(updateTimer, 1000);
+}
+
+function endGame() {
+  $(".game").css("display", "none");
+  $(".end").css("display", "flex");
+  $(".rule").css("display", "none");
+  checkAndUpdateScore();
+
+  $(".end").html(`
+    <div class="yourScore">Your Score: ${
+      $(".player-score").text().split(" ")[1]
+    }</div>
+    <button class="try" id="tryAgainButton">Try Again</button>
+    <button class="try" id="checkRankButton">Check Rank</button>
+  `);
+
+  $("#tryAgainButton").on("click", function () {
+    console.log("Try Again button clicked");
+    resetGame();
+  });
+
+  $("#checkRankButton").on("click", function () {
+    window.location.href = "/users/rank";
+  });
+}
+
 function readyToPlay() {
   stateOfNumber = true;
   $(".numbers").each(function () {
@@ -61,6 +122,7 @@ function readyToPlay() {
   $(".readyToPlay").css("display", "none");
   $(".game").removeClass("looming");
   $(".rule").removeClass("looming");
+  timeRemaining = timeLimit;
   startTimer();
 }
 
@@ -68,65 +130,11 @@ $(window).on("load", function () {
   var timeBar = $("#time-bar");
   var timeBarContainer = $(".time-bar-container");
   var timeRemainingText = $(".time-remaining");
-  timeRemaining = timeLimit;
 
-  function startTimer() {
-    interval = setInterval(updateTimer, 1000);
-  }
-  function updateTimer() {
-    timeRemaining--;
-    var percentage = (timeRemaining / timeLimit) * 100;
-    timeBar.css("width", percentage + "%");
-    timeRemainingText.text(timeRemaining + "s");
-
-    if (percentage > 50) {
-      timeBar.css("background-color", "#4caf50");
-      timeBarContainer.css("border-color", "#4caf50");
-    } else if (percentage > 25) {
-      timeBar.css("background-color", "#ffeb3b");
-      timeBarContainer.css("border-color", "#ffeb3b");
-    } else {
-      timeBar.css("background-color", "#f44336");
-      timeBarContainer.css("border-color", "#f44336");
-    }
-
-    if (timeRemaining <= 0) {
-      clearInterval(interval);
-      endGame();
-    }
-  }
-
-  function pauseTimer() {
-    clearInterval(interval);
-  }
-
-  function resumeTimer() {
-    interval = setInterval(updateTimer, 1000);
-  }
-
-  function endGame() {
-    $(".game").css("display", "none");
-    $(".end").css("display", "flex");
-    $(".rule").css("display", "none");
-    checkAndUpdateScore();
-
-    $(".end").html(`
-      <div class="yourScore">Your Score: ${
-        $(".player-score").text().split(" ")[1]
-      }</div>
-      <button class="try" id="tryAgainButton">Try Again</button>
-      <button class="try" id="checkRankButton">Check Rank</button>
-    `);
-
-    $("#tryAgainButton").on("click", function () {
-      console.log("Try Again button clicked");
-      resetGame();
-    });
-
-    $("#checkRankButton").on("click", function () {
-      window.location.href = "/users/rank";
-    });
-  }
+  $(".buttonBegin").on("click", function () {
+    readyToPlay();
+    ready();
+  });
 
   function newQuestion() {
     backNumber = [];
