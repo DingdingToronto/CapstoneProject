@@ -4,7 +4,7 @@ var allNumbers = [];
 var clueUsed = false;
 var interval;
 var timeRemaining;
-var timeLimit = 60;
+var timeLimit = 5;
 var stateOfNumber = false;
 
 if (!localStorage.getItem("stateOfBegin")) {
@@ -125,7 +125,75 @@ function readyToPlay() {
   timeRemaining = timeLimit;
   startTimer();
 }
+function checkAndUpdateScore() {
+  const currentScore = parseInt($(".player-score").text().split(" ")[1]);
+  updateScore(currentScore);
+}
 
+function updateScore(newScore) {
+  $.ajax({
+    url: "/users/updateScore",
+    method: "POST",
+    data: { score: newScore },
+    success: function () {
+      $(".player-score").text("Score: " + newScore);
+    },
+    error: function (err) {
+      console.error("Failed to update score:", err);
+    },
+  });
+}
+function resetGame() {
+  resetScore();
+  $(".end").css("display", "none");
+  $(".rule").css("display", "unset");
+  $(".game").css("display", "block");
+  newQuestion();
+  timeRemaining = timeLimit;
+  startTimer();
+}
+function newQuestion() {
+  backNumber = [];
+  countNumber = [];
+  allNumbers = [];
+  clueUsed = false;
+  $("#resulting").text("");
+  $(".numbers").each(function () {
+    setNumberStyles($(this));
+    $(this).css("opacity", "1");
+    $(this).off("click");
+    $(this).on("click", numberClickHandler);
+  });
+}
+
+function resetScore() {
+  $.ajax({
+    url: "/users/resetScore",
+    method: "POST",
+    success: function () {
+      $(".player-score").text("Score: 0");
+    },
+    error: function (err) {
+      console.error("Failed to reset score:", err);
+    },
+  });
+}
+function isLastCharacterNotNumber() {
+  var lastCharacter = $("#resulting").text().split("");
+  return (
+    isNaN(parseInt(lastCharacter[lastCharacter.length - 1])) &&
+    lastCharacter[lastCharacter.length - 1] != ")"
+  );
+}
+
+function numberClickHandler() {
+  if (isLastCharacterNotNumber()) {
+    var textToAppend = $(this).text();
+    $("#resulting").append(" " + textToAppend);
+    $(this).css("opacity", "0.3");
+    countNumber.push($(this).text());
+  }
+}
 $(window).on("load", function () {
   var timeBar = $("#time-bar");
   var timeBarContainer = $(".time-bar-container");
@@ -136,30 +204,6 @@ $(window).on("load", function () {
     ready();
   });
 
-  function newQuestion() {
-    backNumber = [];
-    countNumber = [];
-    allNumbers = [];
-    clueUsed = false;
-    $("#resulting").text("");
-    $(".numbers").each(function () {
-      setNumberStyles($(this));
-      $(this).css("opacity", "1");
-      $(this).off("click");
-      $(this).on("click", numberClickHandler);
-    });
-  }
-
-  function resetGame() {
-    resetScore();
-    $(".end").css("display", "none");
-    $(".rule").css("display", "unset");
-    $(".game").css("display", "block");
-    newQuestion();
-    timeRemaining = timeLimit;
-    startTimer();
-  }
-
   if (stateOfBegin === "false") {
     $(".buttonBegin").on("click", function () {
       resetGame();
@@ -167,23 +211,6 @@ $(window).on("load", function () {
     });
   } else {
     resetGame();
-  }
-
-  function isLastCharacterNotNumber() {
-    var lastCharacter = $("#resulting").text().split("");
-    return (
-      isNaN(parseInt(lastCharacter[lastCharacter.length - 1])) &&
-      lastCharacter[lastCharacter.length - 1] != ")"
-    );
-  }
-
-  function numberClickHandler() {
-    if (isLastCharacterNotNumber()) {
-      var textToAppend = $(this).text();
-      $("#resulting").append(" " + textToAppend);
-      $(this).css("opacity", "0.3");
-      countNumber.push($(this).text());
-    }
   }
 
   $(".numbers").each(function () {
@@ -268,38 +295,6 @@ $(window).on("load", function () {
       }
     });
   });
-
-  function updateScore(newScore) {
-    $.ajax({
-      url: "/users/updateScore",
-      method: "POST",
-      data: { score: newScore },
-      success: function () {
-        $(".player-score").text("Score: " + newScore);
-      },
-      error: function (err) {
-        console.error("Failed to update score:", err);
-      },
-    });
-  }
-
-  function resetScore() {
-    $.ajax({
-      url: "/users/resetScore",
-      method: "POST",
-      success: function () {
-        $(".player-score").text("Score: 0");
-      },
-      error: function (err) {
-        console.error("Failed to reset score:", err);
-      },
-    });
-  }
-
-  function checkAndUpdateScore() {
-    const currentScore = parseInt($(".player-score").text().split(" ")[1]);
-    updateScore(currentScore);
-  }
 
   $(".go").on("click", function () {
     const originalText = $("#resulting").text();
