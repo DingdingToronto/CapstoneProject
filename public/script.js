@@ -5,6 +5,7 @@ var clueUsed = false;
 var interval;
 var timeRemaining;
 var timeLimit = 60;
+var stateOfNumber = false;
 
 if (!localStorage.getItem("stateOfBegin")) {
   localStorage.setItem("stateOfBegin", "false");
@@ -16,6 +17,53 @@ function ready() {
   localStorage.setItem("stateOfBegin", "true");
 }
 
+function getRandomNumber() {
+  if (stateOfNumber == true) {
+    return Math.ceil(Math.random() * 13);
+  } else {
+    return "?";
+  }
+}
+
+function getRandomColor() {
+  return Math.floor(Math.random() * 256);
+}
+
+function setNumberStyles(element) {
+  var numberToShow = getRandomNumber();
+  var colorToShow1 = getRandomColor();
+  var colorToShow2 = getRandomColor();
+  var colorToShow3 = getRandomColor();
+
+  element.html("<div>" + numberToShow + "</div>");
+  element.css(
+    "box-shadow",
+    "5px 5px 10px rgb(" +
+      colorToShow1 +
+      "," +
+      colorToShow2 +
+      "," +
+      colorToShow3 +
+      ")"
+  );
+  element.css(
+    "color",
+    "rgb(" + colorToShow1 + "," + colorToShow2 + "," + colorToShow3 + ")"
+  );
+  allNumbers.push(numberToShow);
+}
+
+function readyToPlay() {
+  stateOfNumber = true;
+  $(".numbers").each(function () {
+    setNumberStyles($(this));
+  });
+  $(".readyToPlay").css("display", "none");
+  $(".game").removeClass("looming");
+  $(".rule").removeClass("looming");
+  startTimer();
+}
+
 $(window).on("load", function () {
   var timeBar = $("#time-bar");
   var timeBarContainer = $(".time-bar-container");
@@ -25,7 +73,6 @@ $(window).on("load", function () {
   function startTimer() {
     interval = setInterval(updateTimer, 1000);
   }
-
   function updateTimer() {
     timeRemaining--;
     var percentage = (timeRemaining / timeLimit) * 100;
@@ -112,38 +159,6 @@ $(window).on("load", function () {
     });
   } else {
     resetGame();
-  }
-
-  function getRandomNumber() {
-    return Math.ceil(Math.random() * 13);
-  }
-
-  function getRandomColor() {
-    return Math.floor(Math.random() * 256);
-  }
-
-  function setNumberStyles(element) {
-    var numberToShow = getRandomNumber();
-    var colorToShow1 = getRandomColor();
-    var colorToShow2 = getRandomColor();
-    var colorToShow3 = getRandomColor();
-
-    element.html("<div>" + numberToShow + "</div>");
-    element.css(
-      "box-shadow",
-      "5px 5px 10px rgb(" +
-        colorToShow1 +
-        "," +
-        colorToShow2 +
-        "," +
-        colorToShow3 +
-        ")"
-    );
-    element.css(
-      "color",
-      "rgb(" + colorToShow1 + "," + colorToShow2 + "," + colorToShow3 + ")"
-    );
-    allNumbers.push(numberToShow);
   }
 
   function isLastCharacterNotNumber() {
@@ -332,9 +347,11 @@ $(window).on("load", function () {
   });
 
   $(".rule").on("click", function () {
-    $(".explaination").css("display", "block");
-    $(".game").css("display", "none");
-    pauseTimer();
+    if (!$(".game").hasClass("looming")) {
+      $(".explaination").css("display", "block");
+      $(".game").css("display", "none");
+      pauseTimer();
+    }
   });
 
   $(".close-rule").on("click", function () {
