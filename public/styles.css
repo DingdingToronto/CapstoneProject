@@ -238,9 +238,17 @@ body {
 .go {
   color: green;
 }
-
-.back:hover,
 .go:hover {
+  background-color: #000000;
+  color: yellow;
+}
+.clue:hover {
+  background-color: #000000;
+  color: red;
+}
+.back:hover,
+.go:hover,
+.clue:hover {
   transform: scale(1.1);
 }
 
@@ -311,6 +319,7 @@ body {
   background-color: #4caf50;
   color: white;
   padding: 10px 20px;
+  margin-top: 20px;
   font-size: 18px;
   border: none;
   border-radius: 5px;
@@ -500,10 +509,6 @@ body {
   border-radius: 5px;
   transition: background-color 0.3s ease, color 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: "Roboto", sans-serif;
-  font-weight: bold;
-  font-style: italic;
-  margin-top: 20px;
 }
 
 .back:hover {
@@ -695,13 +700,18 @@ body {
   padding: 20px;
   font-size: 24px;
   font-weight: bold;
-  background-color: #4caf50;
+  background-color: black;
   color: white;
-  border: none;
+  border: white solid 2px;
   cursor: pointer;
   z-index: 10;
 }
-
+.readyToPlay:hover {
+  background-color: #ff6f61;
+  color: white;
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 0 15px 5px rgba(255, 111, 97, 0.7);
+}
 .looming {
   opacity: 0.1;
   pointer-events: none;
