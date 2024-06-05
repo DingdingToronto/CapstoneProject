@@ -4,7 +4,7 @@ var allNumbers = [];
 var clueUsed = false;
 var interval;
 var timeRemaining;
-var timeLimit = 5;
+var timeLimit = 60;
 var stateOfNumber = false;
 
 if (!localStorage.getItem("stateOfBegin")) {
