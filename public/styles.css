@@ -706,3 +706,40 @@ body {
   opacity: 0.1;
   pointer-events: none;
 }
+
+.rulesPage {
+  color: white;
+}
+
+.subtitle {
+  text-align: center;
+}
+
+.subtitle .learn-rules {
+  font-size: 0.8em;
+  color: white;
+  text-decoration: none;
+}
+
+.subtitle .learn-rules:hover {
+  color: yellow;
+  text-decoration: underline;
+}
+.arrow {
+  animation: blink 1s infinite;
+
+  color: yellow;
+  font-size: 2em;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

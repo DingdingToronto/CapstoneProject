@@ -12,4 +12,8 @@ router.get("/game", (req, res) => {
   res.render("index", { user: req.session.user });
 });
 
+router.get("/rules", (req, res) => {
+  res.render("rules");
+});
+
 module.exports = router;
