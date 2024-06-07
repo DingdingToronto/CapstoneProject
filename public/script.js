@@ -314,6 +314,9 @@ $(window).on("load", function () {
         $("#resulting").css("fontSize", "20px");
         $("#resulting").css("color", "green");
 
+        timeRemaining += 10;
+        if (timeRemaining > timeLimit) timeRemaining = timeLimit;
+
         if (!clueUsed) {
           const newScore =
             parseInt($(".player-score").text().split(" ")[1]) + 1;
