@@ -695,14 +695,14 @@ body {
   align-items: center;
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 48%;
   transform: translate(-50%, -50%);
   padding: 20px;
   font-size: 24px;
   font-weight: bold;
   background-color: black;
-  color: white;
-  border: white solid 2px;
+  color: red;
+  border: red solid 2px;
   cursor: pointer;
   z-index: 10;
 }
@@ -711,6 +711,7 @@ body {
   color: white;
   transform: translate(-50%, -50%) scale(1.1);
   box-shadow: 0 0 15px 5px rgba(255, 111, 97, 0.7);
+  border: orangered solid 3px;
 }
 .looming {
   opacity: 0.1;
