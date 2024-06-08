@@ -4,7 +4,7 @@ var allNumbers = [];
 var clueUsed = false;
 var interval;
 var timeRemaining;
-var timeLimit = 3;
+var timeLimit = 60;
 var stateOfNumber = false;
 
 if (!localStorage.getItem("stateOfBegin")) {
@@ -109,7 +109,7 @@ function endGame() {
         <div class="yourScore">Your Score: ${
           $(".player-score").text().split(" ")[1]
         }</div>
-        <div class="yourRank">Your Best Rank: ${rank}</div>
+        <div class="yourRank">Your Rank: ${rank}</div>
         <button class="try" id="tryAgainButton">Try Again</button>
         <button class="try" id="checkRankButton">Check Rank</button>
       `);
@@ -122,6 +122,8 @@ function endGame() {
       $("#checkRankButton").on("click", function () {
         window.location.href = "/users/rank";
       });
+
+      showConfetti();
     })
     .catch((error) => {
       console.error("Error fetching rank:", error);
@@ -142,7 +144,22 @@ function endGame() {
       $("#checkRankButton").on("click", function () {
         window.location.href = "/users/rank";
       });
+
+      showConfetti();
     });
+}
+
+function showConfetti() {
+  for (let i = 0; i < 100; i++) {
+    const confetti = $("<div class='confetti'></div>");
+    confetti.css({
+      left: `${Math.random() * 100}vw`,
+      top: `${Math.random() * -50}vh`,
+      backgroundColor: `hsl(${Math.random() * 360}, 100%, 50%)`,
+    });
+    $("body").append(confetti);
+    setTimeout(() => confetti.remove(), 2500);
+  }
 }
 
 function readyToPlay() {
