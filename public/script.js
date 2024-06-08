@@ -4,7 +4,7 @@ var allNumbers = [];
 var clueUsed = false;
 var interval;
 var timeRemaining;
-var timeLimit = 60;
+var timeLimit = 3;
 var stateOfNumber = false;
 
 if (!localStorage.getItem("stateOfBegin")) {
@@ -96,22 +96,53 @@ function endGame() {
   $(".rule").css("display", "none");
   checkAndUpdateScore();
 
-  $(".end").html(`
-    <div class="yourScore">Your Score: ${
-      $(".player-score").text().split(" ")[1]
-    }</div>
-    <button class="try" id="tryAgainButton">Try Again</button>
-    <button class="try" id="checkRankButton">Check Rank</button>
-  `);
+  fetch(`/users/rank/${userId}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      const rank = data.rank;
+      $(".end").html(`
+        <div class="yourScore">Your Score: ${
+          $(".player-score").text().split(" ")[1]
+        }</div>
+        <div class="yourRank">Your Best Rank: ${rank}</div>
+        <button class="try" id="tryAgainButton">Try Again</button>
+        <button class="try" id="checkRankButton">Check Rank</button>
+      `);
 
-  $("#tryAgainButton").on("click", function () {
-    console.log("Try Again button clicked");
-    resetGame();
-  });
+      $("#tryAgainButton").on("click", function () {
+        console.log("Try Again button clicked");
+        resetGame();
+      });
 
-  $("#checkRankButton").on("click", function () {
-    window.location.href = "/users/rank";
-  });
+      $("#checkRankButton").on("click", function () {
+        window.location.href = "/users/rank";
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching rank:", error);
+      $(".end").html(`
+        <div class="yourScore">Your Score: ${
+          $(".player-score").text().split(" ")[1]
+        }</div>
+        <div class="rankError">Error fetching rank: ${error.message}</div>
+        <button class="try" id="tryAgainButton">Try Again</button>
+        <button class="try" id="checkRankButton">Check Rank</button>
+      `);
+
+      $("#tryAgainButton").on("click", function () {
+        console.log("Try Again button clicked");
+        resetGame();
+      });
+
+      $("#checkRankButton").on("click", function () {
+        window.location.href = "/users/rank";
+      });
+    });
 }
 
 function readyToPlay() {

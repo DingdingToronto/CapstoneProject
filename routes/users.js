@@ -90,4 +90,15 @@ router.get("/rank", async (req, res) => {
   }
 });
 
+router.get("/rank/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const users = await User.find().sort({ score: -1 });
+    const rank = users.findIndex((user) => user._id.toString() === userId) + 1;
+    res.status(200).json({ rank });
+  } catch (err) {
+    res.status(500).json({ error: "Error retrieving user rank" });
+  }
+});
+
 module.exports = router;
