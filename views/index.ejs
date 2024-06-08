@@ -74,10 +74,10 @@
     </div>
     <div class="end"></div>
     <script src="/script.js"></script>
-    <% } %>
-
+    <% } %> <% if (user) { %>
     <script>
       const userId = "<%= user._id %>";
     </script>
+    <% } %>
   </body>
 </html>
