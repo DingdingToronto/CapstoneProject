@@ -20,6 +20,10 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  previousRank: {
+    type: Number,
+    default: null,
+  },
 });
 
 UserSchema.pre("save", async function (next) {

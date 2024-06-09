@@ -95,7 +95,23 @@ router.get("/rank/:userId", async (req, res) => {
     const userId = req.params.userId;
     const users = await User.find().sort({ score: -1 });
     const rank = users.findIndex((user) => user._id.toString() === userId) + 1;
-    res.status(200).json({ rank });
+
+    const user = await User.findById(userId);
+    let message;
+    if (user.previousRank === null) {
+      message = "This is your first rank.";
+    } else if (rank < user.previousRank) {
+      message = `Congratulations! Your rank has improved from ${user.previousRank} to ${rank}.`;
+    } else if (rank > user.previousRank) {
+      message = `Your rank has dropped from ${user.previousRank} to ${rank}.`;
+    } else {
+      message = "Your rank remains the same.";
+    }
+
+    user.previousRank = rank;
+    await user.save();
+
+    res.status(200).json({ rank, message });
   } catch (err) {
     res.status(500).json({ error: "Error retrieving user rank" });
   }
