@@ -4,7 +4,7 @@ var allNumbers = [];
 var clueUsed = false;
 var interval;
 var timeRemaining;
-var timeLimit = 3;
+var timeLimit = 60;
 var stateOfNumber = false;
 
 if (!localStorage.getItem("stateOfBegin")) {
@@ -110,7 +110,7 @@ function endGame() {
         <div class="yourScore">Your Score: ${
           $(".player-score").text().split(" ")[1]
         }</div>
-        <div class="yourRank">Your Rank: ${rank}</div>
+        <div class="yourRank">Your best rank till now: ${rank}</div>
         <div class="rankMessage">${message}</div>
         <button class="try" id="tryAgainButton">Try Again</button>
         <button class="try" id="checkRankButton">Check Rank</button>
