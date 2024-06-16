@@ -105,22 +105,26 @@ body {
   0% {
     color: #ff0000;
   }
+
   25% {
     color: #00ff00;
   }
+
   50% {
     color: #0000ff;
   }
+
   75% {
     color: #ff00ff;
   }
+
   100% {
     color: #ffff00;
   }
 }
 
 .game {
-  display: none;
+  display: block;
 }
 
 .numberBox {
@@ -238,14 +242,17 @@ body {
 .go {
   color: green;
 }
+
 .go:hover {
   background-color: #000000;
   color: yellow;
 }
+
 .clue:hover {
   background-color: #000000;
   color: red;
 }
+
 .back:hover,
 .go:hover,
 .clue:hover {
@@ -256,15 +263,19 @@ body {
   0% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-3px) rotate(-1deg);
   }
+
   50% {
     transform: translateX(3px) rotate(1deg);
   }
+
   75% {
     transform: translateX(-2px) rotate(-1deg);
   }
+
   100% {
     transform: translateX(2px) rotate(1deg);
   }
@@ -359,6 +370,7 @@ body {
   justify-content: center;
   width: 53%;
 }
+
 .time-bar-container {
   width: 80%;
   height: 25px;
@@ -519,6 +531,7 @@ body {
 .yourScore {
   margin-top: 30px;
 }
+
 #tryAgainButton {
   margin-bottom: 20px;
 }
@@ -689,6 +702,7 @@ body {
     font-size: 1.5em;
   }
 }
+
 .readyToPlay {
   display: flex;
   justify-content: center;
@@ -706,6 +720,7 @@ body {
   cursor: pointer;
   z-index: 10;
 }
+
 .readyToPlay:hover {
   background-color: #ff6f61;
   color: white;
@@ -713,6 +728,7 @@ body {
   box-shadow: 0 0 15px 5px rgba(255, 111, 97, 0.7);
   border: orangered solid 3px;
 }
+
 .looming {
   opacity: 0.1;
   pointer-events: none;
@@ -736,6 +752,7 @@ body {
   color: yellow;
   text-decoration: underline;
 }
+
 .arrow {
   animation: blink 1s infinite;
 
@@ -747,19 +764,23 @@ body {
   0% {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
+
 /*-------------------------------------------------------------------congratulation animation*/
 @keyframes confettiFall {
   0% {
     transform: translateY(0) rotate(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(500px) rotate(720deg);
     opacity: 0;
